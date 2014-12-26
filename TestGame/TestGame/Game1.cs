@@ -117,78 +117,38 @@ namespace TestGame
                 spritePosition.Y = MinY;
             }
 
-            KeyboardState newState = Keyboard.GetState();
-
-            if (newState.IsKeyDown(Keys.Up))
+            if (checkKeyDown(Keys.Up))
             {
-                // If not down last update, key has just been pressed.
-                if (!oldState.IsKeyDown(Keys.Up))
+                if (spriteSpeed.Y > 0)
                 {
-                    if (spriteSpeed.Y > 0)
-                    {
-                        spriteSpeed.Y *= -1;
-                    }
+                    spriteSpeed.Y *= -1;
                 }
             }
-            else if (oldState.IsKeyDown(Keys.Up))
-            {
-                // Key was down last update, but not down now, so
-                // it has just been released.
-            }
 
-            if (newState.IsKeyDown(Keys.Down))
+            if (checkKeyDown(Keys.Down))
             {
-                // If not down last update, key has just been pressed.
-                if (!oldState.IsKeyDown(Keys.Down))
+                if (spriteSpeed.Y < 0)
                 {
-                    if (spriteSpeed.Y < 0)
-                    {
-                        spriteSpeed.Y *= -1;
-                    }
+                    spriteSpeed.Y *= -1;
                 }
             }
-            else if (oldState.IsKeyDown(Keys.Down))
-            {
-                // Key was down last update, but not down now, so
-                // it has just been released.
-            }
 
-            if (newState.IsKeyDown(Keys.Right))
+            if (checkKeyDown(Keys.Right))
             {
-                // If not down last update, key has just been pressed.
-                if (!oldState.IsKeyDown(Keys.Right))
+                if (spriteSpeed.X < 0)
                 {
-                    if (spriteSpeed.X < 0)
-                    {
-                        spriteSpeed.X *= -1;
-                    }
+                    spriteSpeed.X *= -1;
                 }
             }
-            else if (oldState.IsKeyDown(Keys.Right))
-            {
-                // Key was down last update, but not down now, so
-                // it has just been released.
-            }
 
-            if (newState.IsKeyDown(Keys.Left))
+            if (checkKeyDown(Keys.Left))
             {
-                // If not down last update, key has just been pressed.
-                if (!oldState.IsKeyDown(Keys.Left))
+                if (spriteSpeed.X > 0)
                 {
-                    if (spriteSpeed.X > 0)
-                    {
-                        spriteSpeed.X *= -1;
-                    }
+                    spriteSpeed.X *= -1;
                 }
             }
-            else if (oldState.IsKeyDown(Keys.Left))
-            {
-                // Key was down last update, but not down now, so
-                // it has just been released.
-            }
 
-            // Update saved state.
-            oldState = newState;
             base.Update(gameTime);
         }
 
@@ -207,6 +167,12 @@ namespace TestGame
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        protected bool checkKeyDown(Keys key)
+        {
+            KeyboardState newState = Keyboard.GetState();
+            return  newState.IsKeyDown(key) && !oldState.IsKeyDown(key);
         }
     }
 }
