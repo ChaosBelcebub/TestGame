@@ -1,7 +1,7 @@
 C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\bin\x86\Debug\Content\character.xnb
 C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\bin\x86\Debug\TestGame.exe
 C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\bin\x86\Debug\TestGame.pdb
-C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\obj\x86\Debug\TestGame.csprojResolveAssemblyReference.cache
 C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\obj\x86\Debug\TestGame.exe
 C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\obj\x86\Debug\TestGame.pdb
+C:\Users\Michael\Documents\Projekte\TestGame\TestGame\TestGame\obj\x86\Debug\TestGame.csprojResolveAssemblyReference.cache

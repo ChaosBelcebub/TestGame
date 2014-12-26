@@ -20,7 +20,8 @@ namespace TestGame
         SpriteBatch spriteBatch;
         KeyboardState oldState;
         MouseState mouseStateCurrent, mouseStatePrevious;
-        Rectangle r1;
+        BoundingBox pictureBoundingBox = new BoundingBox();
+        BoundingBox rectangleBoundingBox = new BoundingBox();
 
         public Game1()
         {
@@ -40,6 +41,7 @@ namespace TestGame
             this.IsMouseVisible = true;
             base.Initialize();
             oldState = Keyboard.GetState();
+
         }
 
         // This is a texture we can render.
@@ -90,8 +92,9 @@ namespace TestGame
 
             // TODO: Add your update logic here
             // Move the sprite by speed, scaled by elapsed time.
-            spritePosition +=
-                spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            spritePosition += spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            updatePictureBounding(spritePosition);
 
             int MaxX =
                 graphics.GraphicsDevice.Viewport.Width - myTexture.Width;
@@ -101,6 +104,8 @@ namespace TestGame
             int MinY = 0;
 
             // Check for bounce.
+            checkBounce(gameTime);
+
             if (spritePosition.X > MaxX)
             {
                 spriteSpeed.X *= -1;
@@ -123,12 +128,6 @@ namespace TestGame
             {
                 spriteSpeed.Y *= -1;
                 spritePosition.Y = MinY;
-            }
-
-            if (myTexture.Bounds.Intersects(myRectangle.Bounds))
-            {
-                spriteSpeed.Y *= -1;
-                spriteSpeed.X *= -1;
             }
 
             if (checkKeyDown(Keys.Up))
@@ -169,6 +168,7 @@ namespace TestGame
             {
                 rectanglePosition.X = mouseStateCurrent.X;
                 rectanglePosition.Y = mouseStateCurrent.Y;
+                updateRectangleBounding(rectanglePosition);
             }
             mouseStatePrevious = mouseStateCurrent;
             base.Update(gameTime);
@@ -196,6 +196,42 @@ namespace TestGame
         {
             KeyboardState newState = Keyboard.GetState();
             return  newState.IsKeyDown(key) && !oldState.IsKeyDown(key);
+        }
+
+        private struct boundingBox
+        {
+            public Vector2 topLeft;
+            public Vector2 bottomRight;
+        }
+
+        private void updatePictureBounding(Vector2 position)
+        {
+            pictureBoundingBox.Min = new Vector3(position, 0);
+            pictureBoundingBox.Max.X = position.X + myTexture.Width;
+            pictureBoundingBox.Max.Y = position.Y + myTexture.Height;
+        }
+
+        private void updateRectangleBounding(Vector2 position)
+        {
+            rectangleBoundingBox.Min = new Vector3(position, 0);
+            rectangleBoundingBox.Max.X = position.X + myRectangle.Width;
+            rectangleBoundingBox.Max.Y = position.Y + myRectangle.Height;
+        }
+
+        private void checkBounce(GameTime gameTime)
+        {
+            if (pictureBoundingBox.Intersects(rectangleBoundingBox))
+            {
+                spriteSpeed.X *= -1;
+                updatePictureBounding(spritePosition + (spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds));
+                bool test = pictureBoundingBox.Intersects(rectangleBoundingBox);
+                if (pictureBoundingBox.Intersects(rectangleBoundingBox))
+                {
+                    spriteSpeed.X *= -1;
+                    spriteSpeed.Y *= -1;
+                }
+                updatePictureBounding(spritePosition);
+            }
         }
     }
 }
