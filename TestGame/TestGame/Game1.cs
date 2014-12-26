@@ -19,6 +19,8 @@ namespace TestGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         KeyboardState oldState;
+        MouseState mouseStateCurrent, mouseStatePrevious;
+        Rectangle r1;
 
         public Game1()
         {
@@ -35,16 +37,18 @@ namespace TestGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            this.IsMouseVisible = true;
             base.Initialize();
             oldState = Keyboard.GetState();
         }
 
         // This is a texture we can render.
         Texture2D myTexture;
+        Texture2D myRectangle;
 
         // Set the coordinates to draw the sprite at.
         Vector2 spritePosition = Vector2.Zero;
+        Vector2 rectanglePosition = Vector2.Zero;
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -55,6 +59,10 @@ namespace TestGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             myTexture = Content.Load<Texture2D>("character");
+            myRectangle = new Texture2D(graphics.GraphicsDevice, 30, 30);
+            Color[] data = new Color[30 * 30];
+            for (int i = 0; i < data.Length; ++i) data[i] = Color.Chocolate;
+            myRectangle.SetData(data);
 
             // TODO: use this.Content to load your game content here
         }
@@ -149,6 +157,14 @@ namespace TestGame
                 }
             }
 
+            // Check for mouse click
+            mouseStateCurrent = Mouse.GetState();
+            if (mouseStateCurrent.LeftButton == ButtonState.Pressed)
+            {
+                rectanglePosition.X = mouseStateCurrent.X;
+                rectanglePosition.Y = mouseStateCurrent.Y;
+            }
+            mouseStatePrevious = mouseStateCurrent;
             base.Update(gameTime);
         }
 
@@ -162,8 +178,9 @@ namespace TestGame
 
             // TODO: Add your drawing code here
             // Draw the sprite.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin();
             spriteBatch.Draw(myTexture, spritePosition, Color.White);
+            spriteBatch.Draw(myRectangle, rectanglePosition, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
