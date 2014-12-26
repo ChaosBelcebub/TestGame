@@ -125,6 +125,12 @@ namespace TestGame
                 spritePosition.Y = MinY;
             }
 
+            if (myTexture.Bounds.Intersects(myRectangle.Bounds))
+            {
+                spriteSpeed.Y *= -1;
+                spriteSpeed.X *= -1;
+            }
+
             if (checkKeyDown(Keys.Up))
             {
                 if (spriteSpeed.Y > 0)
