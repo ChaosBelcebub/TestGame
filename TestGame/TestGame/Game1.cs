@@ -224,7 +224,6 @@ namespace TestGame
             {
                 spriteSpeed.X *= -1;
                 updatePictureBounding(spritePosition + (spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds));
-                bool test = pictureBoundingBox.Intersects(rectangleBoundingBox);
                 if (pictureBoundingBox.Intersects(rectangleBoundingBox))
                 {
                     spriteSpeed.X *= -1;
